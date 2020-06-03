@@ -1,3 +1,5 @@
+#password files
+humidityAndTemp/passwords.c
 # Prerequisites
 *.d
 
