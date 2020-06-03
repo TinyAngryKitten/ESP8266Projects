@@ -41,7 +41,6 @@ void setup() {
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
   if (WiFi.status() == WL_CONNECTED) {
     if (client.connected()) {
       sendMeasurements();
@@ -60,7 +59,6 @@ void loop() {
 
 }
 void sendMeasurements() {
-  //baseTopic + value
   Temperature = dht.readTemperature(); // Gets the values of the temperature
   Humidity = dht.readHumidity();
   char tempStr[10];
@@ -70,34 +68,6 @@ void sendMeasurements() {
 
   client.publish(tempTopic, tempStr);
   client.publish(humidityTopic, humStr);
-}
-
-//first value sendt should be the number of characters following
-char* readMsg() {
-  if (!isConnected()) {
-    Serial.println("NO MESSAGE RECEIVED");
-    return NULL;
-  }
-
-  if (!wifiClient.available()) return NULL;
-  int nrOfChars = (int) wifiClient.read();
-
-  int charCnt = 0;
-  char* msg = new char[nrOfChars];
-  char c;
-
-  while (wifiClient.available() && charCnt < nrOfChars) {
-    c = wifiClient.read();
-    if (c == '\0') break;
-    msg[charCnt] = c;
-    charCnt++;
-  }
-  return msg;
-}
-
-bool isConnectedToWifi(char *hostname, int portnr) {
-  if (WiFi.status() == WL_CONNECTED) return wifiClient.connect(hostname, portnr);
-  else return true;
 }
 
 bool isConnected() {
@@ -151,5 +121,4 @@ void callback(char* topic, byte* payload, unsigned int length) {
 
   Serial.println();
   Serial.println("-----------------------");
-
 }
