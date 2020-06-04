@@ -6,14 +6,14 @@
 #define DHTTYPE DHT22
 
 //send message every x milliseconds
-int pollingRate = 2000;
-const char* tempTopic = "bathroom/temperature";
-const char* humidityTopic = "bathroom/humidity";
+int pollingRate = 60000;
+const char* site = "bathroom";
+const char* topic = "sensors";
 
 // DHT Sensor
 uint8_t DHTPin = D4;
-float Temperature;
-float Humidity;
+int Temperature;
+int Humidity;
 DHT dht(DHTPin, DHTTYPE);
 
 //wifi info
@@ -59,15 +59,17 @@ void loop() {
 
 }
 void sendMeasurements() {
-  Temperature = dht.readTemperature(); // Gets the values of the temperature
-  Humidity = dht.readHumidity();
-  char tempStr[10];
-  char humStr[10];
-  sprintf(tempStr, "%f", Temperature);
-  sprintf(humStr, "%f", Humidity);
+  Temperature = (int) dht.readTemperature(); // Gets the values of the temperature
+  Humidity = (int) dht.readHumidity();
+  char tempStr[50];
+  char humStr[50];
+  sprintf(tempStr, "temp, site=%s value=%d",site, Temperature);
+  sprintf(humStr, "humidity, site=%s value=%d ",site, Humidity);
 
-  client.publish(tempTopic, tempStr);
-  client.publish(humidityTopic, humStr);
+  client.publish(topic, tempStr);
+  client.publish(topic, humStr);
+  Serial.println(humStr);
+  Serial.println(topic);
 }
 
 bool isConnected() {
