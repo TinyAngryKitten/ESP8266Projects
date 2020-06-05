@@ -63,8 +63,8 @@ void sendMeasurements() {
   Humidity = (int) dht.readHumidity();
   char tempStr[50];
   char humStr[50];
-  sprintf(tempStr, "temp, site=%s value=%d",site, Temperature);
-  sprintf(humStr, "humidity, site=%s value=%d ",site, Humidity);
+  sprintf(tempStr, "temp,site=%s value=%d",site, Temperature);
+  sprintf(humStr, "humidity,site=%s value=%d ",site, Humidity);
 
   client.publish(topic, tempStr);
   client.publish(topic, humStr);
